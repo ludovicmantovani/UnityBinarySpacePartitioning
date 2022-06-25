@@ -12,8 +12,9 @@ public class CreateDungeon : MonoBehaviour
 
     void Start()
     {
-        _root = new Leaf(0,0,mapWidth, mapDepth, scale);
-        _root.Draw();
+        _root = new Leaf(0, 0, mapWidth, mapDepth, scale);
+        _root.Split();
+        //_root.Draw();
     }
 
     void Update()

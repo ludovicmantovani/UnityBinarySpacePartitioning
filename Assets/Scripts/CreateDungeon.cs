@@ -13,8 +13,27 @@ public class CreateDungeon : MonoBehaviour
     void Start()
     {
         _root = new Leaf(0, 0, mapWidth, mapDepth, scale);
-        _root.Split();
-        //_root.Draw();
+        BinarySpacePartitioning(_root, 6);
+    }
+
+    void BinarySpacePartitioning(Leaf leaf, int splitDepth)
+    {
+        if (leaf == null) return;
+        if (splitDepth <= 0)
+        {
+            leaf.Draw(0);
+            return;
+        }
+
+        if (leaf.Split())
+        {
+            BinarySpacePartitioning(leaf.leftChild, splitDepth - 1);
+            BinarySpacePartitioning(leaf.rightChild, splitDepth - 1);
+        }
+        else
+        {
+            leaf.Draw(0);
+        }
     }
 
     void Update()

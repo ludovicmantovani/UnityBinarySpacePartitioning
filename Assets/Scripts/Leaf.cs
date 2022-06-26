@@ -9,6 +9,7 @@ public class Leaf
     int _width;
     int _depth;
     int _scale;
+    int _roomMin = 5;
 
     public Leaf leftChild;
     public Leaf rightChild;
@@ -24,15 +25,33 @@ public class Leaf
 
     public bool Split()
     {
-        if (Random.Range(0, 100) < 50)
+        if (_width <= _roomMin || _depth <= _roomMin) return false;
+
+        bool splitHorizontal = Random.Range(0, 100) > 50;
+        if (_width > _depth && _width/_depth >= 1.2)
         {
-            int l1Depth = Random.Range((int)(_depth * 0.3f), (int)(_depth * 0.7f));
+            splitHorizontal = false;
+        }
+        else if (_depth > _width && _depth/_width >= 1.2)
+        {
+            splitHorizontal = true;
+        }
+
+        int max = (splitHorizontal ? _depth : _width) - _roomMin;
+        if (max <= _roomMin)
+        {
+            return false;
+        }
+
+        if (splitHorizontal)
+        {
+            int l1Depth = Random.Range(_roomMin, max);
             leftChild = new Leaf(_xpos, _zpos, _width, l1Depth, _scale);
             rightChild = new Leaf(_xpos, _zpos + l1Depth, _width, _depth - l1Depth, _scale);
         }
         else
         {
-            int l1Width = Random.Range((int)(_width * 0.3f), (int)(_width * 0.7f));
+            int l1Width = Random.Range(_roomMin, max);
             leftChild = new Leaf(_xpos, _zpos, l1Width, _depth, _scale);
             rightChild = new Leaf(_xpos + l1Width, _zpos, _width - l1Width, _depth, _scale);
         }

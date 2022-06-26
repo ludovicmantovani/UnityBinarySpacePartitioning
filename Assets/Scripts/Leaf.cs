@@ -14,6 +14,11 @@ public class Leaf
     public Leaf leftChild;
     public Leaf rightChild;
 
+    public int Xpos { get => _xpos;}
+    public int Zpos { get => _zpos;}
+    public int Width { get => _width;}
+    public int Depth { get => _depth;}
+
     public Leaf(int xpos, int zpos, int width, int depth, int scale)
     {
         _xpos = xpos;
@@ -61,7 +66,7 @@ public class Leaf
 
     public void Draw(byte[,] map)
     {
-        Color c = new Color(Random.Range(0,1f), Random.Range(0, 1f), Random.Range(0, 1f));
+        /*Color c = new Color(Random.Range(0,1f), Random.Range(0, 1f), Random.Range(0, 1f));
         for (int x = _xpos; x < _width + _xpos; x++)
         {
             for (int z = _zpos; z < _depth + _zpos; z++)
@@ -71,7 +76,7 @@ public class Leaf
                 cube.transform.localScale = new Vector3(_scale, _scale, _scale);
                 cube.GetComponent<Renderer>().material.SetColor("_Color", c);
             }
-        }
+        }*/
 
         for (int x = _xpos + 1; x < _width + _xpos - 1; x++)
         {

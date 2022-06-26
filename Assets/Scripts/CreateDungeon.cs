@@ -28,9 +28,30 @@ public class CreateDungeon : MonoBehaviour
         BinarySpacePartitioning(_root, 6);
 
         AddCorridors();
+        AddRandomCorridors(10);
 
         DrawMap();
     }
+
+    void AddRandomCorridors(int numHalls)
+    {
+        for (int i = 0; i < numHalls; i++)
+        {
+            int startX = Random.Range(5, mapWidth - 5);
+            int startZ = Random.Range(5, mapDepth - 5);
+            int length = Random.Range(5, mapWidth - 5);
+
+            if (Random.Range(0, 100) < 50)
+            {
+                line(startX, startZ, length, startZ);
+            }
+            else
+            {
+                line(startX, startZ, startX, length);
+            }
+        }
+    }
+
 
     void BinarySpacePartitioning(Leaf leaf, int splitDepth)
     {

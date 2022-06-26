@@ -10,10 +10,22 @@ public class CreateDungeon : MonoBehaviour
 
     Leaf _root;
 
+    byte[,] map;
+
     void Start()
     {
+        map = new byte[mapWidth, mapDepth];
+        for (int z = 0; z < mapDepth; z++)
+        {
+            for (int x = 0; x < mapWidth; x++)
+            {
+                map[x, z] = 1;
+            }
+        }
+
         _root = new Leaf(0, 0, mapWidth, mapDepth, scale);
         BinarySpacePartitioning(_root, 6);
+        DrawMap();
     }
 
     void BinarySpacePartitioning(Leaf leaf, int splitDepth)
@@ -21,7 +33,7 @@ public class CreateDungeon : MonoBehaviour
         if (leaf == null) return;
         if (splitDepth <= 0)
         {
-            leaf.Draw(0);
+            leaf.Draw(map);
             return;
         }
 
@@ -32,12 +44,23 @@ public class CreateDungeon : MonoBehaviour
         }
         else
         {
-            leaf.Draw(0);
+            leaf.Draw(map);
         }
     }
 
-    void Update()
+    void DrawMap()
     {
-        
+        for (int z = 0; z < mapDepth; z++)
+        {
+            for (int x = 0; x < mapWidth; x++)
+            {
+                if (map[x, z] == 1)
+                {
+                    GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cube.transform.position = new Vector3(x * scale, 10, z * scale);
+                    cube.transform.localScale = new Vector3(scale, scale, scale);
+                }
+            }
+        }
     }
 }

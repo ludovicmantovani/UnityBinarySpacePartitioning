@@ -59,7 +59,7 @@ public class Leaf
         return true;
     }
 
-    public void Draw(int level)
+    public void Draw(byte[,] map)
     {
         Color c = new Color(Random.Range(0,1f), Random.Range(0, 1f), Random.Range(0, 1f));
         for (int x = _xpos; x < _width + _xpos; x++)
@@ -67,9 +67,17 @@ public class Leaf
             for (int z = _zpos; z < _depth + _zpos; z++)
             {
                 GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                cube.transform.position = new Vector3(x * _scale, level * 3, z * _scale);
+                cube.transform.position = new Vector3(x * _scale, 0, z * _scale);
                 cube.transform.localScale = new Vector3(_scale, _scale, _scale);
                 cube.GetComponent<Renderer>().material.SetColor("_Color", c);
+            }
+        }
+
+        for (int x = _xpos + 1; x < _width + _xpos - 1; x++)
+        {
+            for (int z = _zpos + 1; z < _depth + _zpos - 1; z++)
+            {
+                map[x, z] = 0;
             }
         }
     }

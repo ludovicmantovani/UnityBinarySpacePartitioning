@@ -4,18 +4,33 @@ using UnityEngine;
 
 public class CreateDungeon : MonoBehaviour
 {
-    public int mapWidth = 50;
-    public int mapDepth = 50;
-    public int scale = 2;
+    [SerializeField] private int mapWidth = 50;
+    [SerializeField] private int mapDepth = 50;
+    [SerializeField] private int scale = 2;
+    [SerializeField] private Material wallMaterial = null;
 
-    Leaf _root;
+    private Leaf _root;
 
-    byte[,] map;
-    List<Vector2> corridors = new List<Vector2>();
+    private byte[,] map;
+    private List<Vector2> corridors = null;
 
     void Start()
     {
+        Generate();
+    }
+
+    public void Regenerate()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+        Generate();
+    }
+    private void Generate()
+    {
         map = new byte[mapWidth, mapDepth];
+        corridors = new List<Vector2>();
         for (int z = 0; z < mapDepth; z++)
         {
             for (int x = 0; x < mapWidth; x++)
@@ -111,15 +126,21 @@ public class CreateDungeon : MonoBehaviour
                 if (map[x, z] == 1)
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cube.transform.position = new Vector3(x * scale, 10, z * scale);
+                    cube.transform.position = new Vector3(x * scale, 1, z * scale);
                     cube.transform.localScale = new Vector3(scale, scale, scale);
+                    if (wallMaterial != null)
+                        cube.GetComponent<Renderer>().material = wallMaterial;
+                    else
+                        cube.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+                    cube.transform.SetParent(transform);
                 }
                 else if (map[x, z] == 2)
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cube.transform.position = new Vector3(x * scale, 10, z * scale);
+                    cube.transform.position = new Vector3(x * scale, 1, z * scale);
                     cube.transform.localScale = new Vector3(scale, scale, scale);
-                    cube.GetComponent<Renderer>().material.SetColor("_Color", new Color(1, 0, 0));
+                    cube.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                    cube.transform.SetParent(transform);
                 }
             }
         }

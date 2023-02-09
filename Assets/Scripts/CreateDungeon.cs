@@ -117,7 +117,7 @@ public class CreateDungeon : MonoBehaviour
             }
         }
     }
-    void DrawMap()
+    private void DrawMap(bool full = false)
     {
         for (int z = 0; z < mapDepth; z++)
         {
@@ -131,15 +131,15 @@ public class CreateDungeon : MonoBehaviour
                     if (wallMaterial != null)
                         cube.GetComponent<Renderer>().material = wallMaterial;
                     else
-                        cube.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+                        cube.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
                     cube.transform.SetParent(transform);
                 }
-                else if (map[x, z] == 2)
+                else if (map[x, z] == 0 && full)
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     cube.transform.position = new Vector3(x * scale, 1, z * scale);
                     cube.transform.localScale = new Vector3(scale, scale, scale);
-                    cube.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+                    cube.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
                     cube.transform.SetParent(transform);
                 }
             }

@@ -119,6 +119,12 @@ public class CreateDungeon : MonoBehaviour
     }
     private void DrawMap(bool full = false)
     {
+        List<GameObject> walls = new List<GameObject>();
+        List<GameObject> emptees = new List<GameObject>();
+
+        GameObject empty = new GameObject("Empty");
+        empty.transform.SetParent(transform);
+
         for (int z = 0; z < mapDepth; z++)
         {
             for (int x = 0; x < mapWidth; x++)
@@ -126,6 +132,7 @@ public class CreateDungeon : MonoBehaviour
                 if (map[x, z] == 1)
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cube.SetActive(false);
                     cube.transform.position = new Vector3(x * scale, 1, z * scale);
                     cube.transform.localScale = new Vector3(scale, scale, scale);
                     if (wallMaterial != null)
@@ -133,16 +140,26 @@ public class CreateDungeon : MonoBehaviour
                     else
                         cube.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
                     cube.transform.SetParent(transform);
+                    walls.Add(cube);
                 }
-                else if (map[x, z] == 0 && full)
+                else if (map[x, z] == 0)
                 {
                     GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    cube.transform.position = new Vector3(x * scale, 1, z * scale);
+                    cube.SetActive(false);
+                    cube.transform.position = new Vector3(x * scale, -0.5f, z * scale);
                     cube.transform.localScale = new Vector3(scale, scale, scale);
                     cube.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
-                    cube.transform.SetParent(transform);
+                    cube.transform.SetParent(empty.transform);
+                    emptees.Add(cube);
                 }
             }
+        }
+
+        foreach (GameObject go in walls) go.SetActive(true);
+        //empty.transform.position.Set(0f, -1f, 0f);
+        foreach (GameObject go in emptees) {
+            //go.transform.position.Set(0f, -1f, 0f);
+            go.SetActive(true);
         }
     }
 

@@ -16,7 +16,7 @@ public class CreateDungeon : MonoBehaviour
 
     void Start()
     {
-        Generate();
+        //Generate();
     }
 
     public void Regenerate()
